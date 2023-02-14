@@ -1,4 +1,4 @@
-# uvicorn main:app --reload --host=0.0.0.0 --port=8000
+# uvicorn main:app --reload --host=0.0.0.0 --port=5055
 
 import json
 from typing import Optional, List, Union
@@ -6,7 +6,26 @@ from fastapi import FastAPI, Header
 import requests
 import re
 
+from starlette.middleware.cors import CORSMiddleware
+
 app = FastAPI()
+
+origins = ["*"]
+
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
@@ -37,6 +56,11 @@ async def say_hello(name: Union[str] = Header(default=None), company: Union[str]
         data_appro["amount"] = re.sub('(<([^>]+)>)', '', i['useMethodQesitm']).replace("\n", "")
         data_appro["danger"] = re.sub('(<([^>]+)>)', '', str(i['atpnQesitm'])).replace("\n", "")
         data_appro["keep"] = re.sub('(<([^>]+)>)', '', str(i['depositMethodQesitm'])).replace("\n", "")
+        if i['itemImage'] is None:
+            data_appro["img"] = "이미지 없음"
+        else:
+            data_appro["img"] = i['itemImage']
         result.append(data_appro)
+
 
     return result

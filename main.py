@@ -72,6 +72,16 @@ async def say_hello(name: Union[str] = Header(default=None), company: Union[str]
 
 @app.get("/news")
 async def news():
-    res = json.loads(news_crowl())
-    return res
-    # return result
+    result = []
+    for i in range(1,6):
+        res = json.loads(news_crowl(i))
+        result.append(res)
+    return result
+
+@app.get("/newsRank")
+async def newsRank():
+    result = []
+    for i in range(1,6):
+        res = json.loads(news_crowl(i))
+        result.append(res)
+    return result

@@ -4,9 +4,14 @@ import json
 from typing import Optional, List, Union
 from fastapi import FastAPI, Header
 import requests
+from bs4 import BeautifulSoup
 import re
+import sys
+import io
 
 from starlette.middleware.cors import CORSMiddleware
+
+from crowl_json.news_crowl import news_crowl
 
 app = FastAPI()
 
@@ -64,3 +69,9 @@ async def say_hello(name: Union[str] = Header(default=None), company: Union[str]
 
 
     return result
+
+@app.get("/news")
+async def news():
+    res = json.loads(news_crowl())
+    return res
+    # return result

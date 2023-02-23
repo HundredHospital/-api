@@ -11,6 +11,7 @@ import io
 
 from starlette.middleware.cors import CORSMiddleware
 
+from crowl_json.newsRank_crowl import newsRank_crowl
 from crowl_json.news_crowl import news_crowl
 
 app = FastAPI()
@@ -71,17 +72,15 @@ async def say_hello(name: Union[str] = Header(default=None), company: Union[str]
     return result
 
 @app.get("/news")
-async def news():
+async def news(value: Union[str] = Header(default=None)):
     result = []
-    for i in range(1,6):
-        res = json.loads(news_crowl(i))
-        result.append(res)
+    res = json.loads(news_crowl(value))
+    result.append(res)
     return result
 
 @app.get("/newsRank")
 async def newsRank():
     result = []
-    for i in range(1,6):
-        res = json.loads(news_crowl(i))
-        result.append(res)
+    res = json.loads(newsRank_crowl())
+    result.append(res)
     return result

@@ -9,8 +9,6 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-import requests
-from bs4 import BeautifulSoup
 
 
 def news_crowl(value):
@@ -39,8 +37,9 @@ def news_crowl(value):
             title = re.sub('(<([^>]+)>)', '', str(i.find_element(By.TAG_NAME, "strong").text)).replace("\n", "")
             summary = re.sub('(<([^>]+)>)', '', str(i.find_element(By.CLASS_NAME, "line-height-3-2x").text)).replace("\n", "").replace(" &amp;", "").replace("\t", "").replace("[의약뉴스]", "").replace("]", "").replace("[","")
             date = re.sub('(<([^>]+)>)', '', str(i.find_element(By.CLASS_NAME, "list-dated").text)).replace("\n","").replace("[", "").replace("]", "")
-            newslist.append([rank, title, summary, date])
-            data_news[str(rank)] = {'title': title, 'summary': summary, 'date': date}
+            link = re.sub('(<([^>]+)>)', '', str(i.find_element(By.TAG_NAME, "a").get_attribute('href')))
+            newslist.append([rank, title, summary, link, date])
+            data_news[str(rank)] = {'title': title, 'summary': summary, 'link': link, 'date': date}
         json_val = json.dumps(data_news)
         return json_val
     decordeValue = parse.unquote(value)
@@ -48,14 +47,14 @@ def news_crowl(value):
     search_tag.send_keys(Keys.ENTER)
     time.sleep(1)
     thnlist = driver.find_elements(By.CLASS_NAME, "list-block")
-    # list2 = thnlist.find_all(".item")
     for i in thnlist:
         count += 1
         rank = count
         title = re.sub('(<([^>]+)>)', '', str(i.find_element(By.TAG_NAME, "strong").text)).replace("\n", "")
         summary = re.sub('(<([^>]+)>)', '', str(i.find_element(By.CLASS_NAME, "line-height-3-2x").text)).replace("\n","").replace(" &amp;", "").replace("\t", "").replace("[의약뉴스]", "").replace("]", "").replace("[", "")
         date = re.sub('(<([^>]+)>)', '', str(i.find_element(By.CLASS_NAME, "list-dated").text)).replace("\n","").replace("[","").replace("]", "")
-        newslist.append([rank, title, summary, date])
-        data_news[str(rank)] = {'title': title, 'summary': summary, 'date': date}
+        link = re.sub('(<([^>]+)>)', '', str(i.find_element(By.TAG_NAME, "a").get_attribute('href')))
+        newslist.append([rank, title, summary, link, date])
+        data_news[str(rank)] = {'title': title, 'summary': summary, 'link': link, 'date': date}
     json_val = json.dumps(data_news)
     return json_val

@@ -74,10 +74,7 @@ async def say_hello(name: Union[str] = Header(default=None), company: Union[str]
 
 @app.get("/news")
 async def news(value: Union[str] = Header(default=None)):
-    result = []
-    res = json.loads(news_crowl(value))
-    result.append(res)
-    return result
+    return news_crowl(value)
 
 @app.get("/newsRank")
 async def newsRank():

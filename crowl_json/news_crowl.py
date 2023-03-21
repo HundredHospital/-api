@@ -17,6 +17,7 @@ def request_url(value):
     dataJson = []
     pg_cnt = 1
     count = 0
+    decordeValue = parse.unquote(value)
     url = f"http://www.newsmp.com/news/articleList.html"
     if value is None:
         url += "?page=1&total=7064&box_idxno=&sc_area=A&view_type=sm&sc_word="

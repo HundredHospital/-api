@@ -34,6 +34,10 @@ def request_url(value):
             data_news = {'title': title, 'summary': summary, 'link': link, 'date': date}
             dataJson.append(data_news)
         return dataJson
+    elif len(decordeValue) < 2:
+        data_news['title'] = '검색결과가 없습니다.'
+        dataJson.append(data_news)
+        return dataJson
     else:
         while(count < 20):
             decordeValue = parse.unquote(value)

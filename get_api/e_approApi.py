@@ -21,6 +21,8 @@ def e_appro_search(name, company, use):
     count = 0
     if data['body']['totalCount'] == 0:
         data_appro = {}
+        count += 1
+        data_appro["id"] = count
         data_appro["name"] = "검색결과가 없습니다"
         result.append(data_appro)
         return result

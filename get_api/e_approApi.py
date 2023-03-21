@@ -18,6 +18,7 @@ def e_appro_search(name, company, use):
           f"serviceKey=hLIMsRTbYc8aY8HV9IIyK79wlrdv9gW1AIol1wtLBjlIcBXmKwcAkLhOIFi8QoDSVg%2B9wvXzdH3gZY91%2FnSUjQ%3D%3D&type=json&itemName{name}&entpName{company}&efcyQesitm{use}"
     res = requests.get(url)
     data = json.loads(res.text)
+    count = 0
     if data['body']['totalCount'] == 0:
         data_appro = {}
         data_appro["name"] = "검색결과가 없습니다"
@@ -26,6 +27,8 @@ def e_appro_search(name, company, use):
     else:
         for i in data['body']['items']:
             data_appro = {}
+            count += 1
+            data_appro["id"] = count
             data_appro["name"] = i['itemName']
             data_appro["company"] = i['entpName']
             data_appro["use"] = re.sub('(<([^>]+)>)', '', i['efcyQesitm']).replace("\n", "")
